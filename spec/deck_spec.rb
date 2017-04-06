@@ -24,7 +24,7 @@ describe Deck do
   end
 
   describe '#deal_cards' do
-    let(:hand) { double('hand', cards: []) }
+    let(:hand) { double( { cards: [] }) }
 
     it 'adds cards to the hand until the hand has 5' do
       expect(hand.cards.length).to eq(0)
@@ -36,12 +36,9 @@ describe Deck do
       expect(hand.cards.length).to eq(0)
       card_deck.deal_cards(hand)
       expect(card_deck.deck.length).to eq(47)
-      expect(card_deck.deck).to_not include(hand.cards)
-      expect(card_deck.deck).to_not include(hand.cards[0])
-      expect(card_deck.deck).to_not include(hand.cards[1])
-      expect(card_deck.deck).to_not include(hand.cards[2])
-      expect(card_deck.deck).to_not include(hand.cards[3])
-      expect(card_deck.deck).to_not include(hand.cards[4])
+      hand.cards.each do |hand_card|
+        expect(card_deck.deck).to_not include(hand_card)
+      end
     end
   end
 
