@@ -7,33 +7,34 @@ class Game
   def initialize(players)
     @players = players
     raise 'Not enough players.' if @players.length < 2
-    @current_bet = 0
+    @current_pot = 0
     @deck = nil
   end
 
   def play
-    @players.each do |player|
-      @deck.deal_cards(player.hand)
-    end
-
-
+    play_round until game_over?
+    puts "Game over! #{winner.name} is the last man standing."
   end
 
   def game_over?
-    @players.count <= 1
+    @players.count { |player| player.pot.zero? } == @players.length - 1
+  end
+
+  def winner
+    raise 'Game is not over' unless game_over?
+    @players.reject { |player| player.pot.zero? }.first
   end
 
   private
 
-  def play_turn
+  def play_round
     round_players = @players.select { |player| player.pot > 0 }
+    @deck = Deck.new
     bet_amt = 0
+    @current_pot = 0
+    round_players.each { |player| @deck.deal_cards(player.hand) }
     bet_amt, round_players = betting_phase(bet_amt, round_players)
-    collect_winnings(round_players.first) if round_players.length <= 1
-    discard_phase(round_players)
-    bet_amt, round_players = betting_phase(bet_amt, round_players)
-    collect_winnings(round_players.first) if round_players.length <= 1
-    showdown(round_players)
+    @players.rotate!
   end
 
   def betting_phase(bet_amt, players)
