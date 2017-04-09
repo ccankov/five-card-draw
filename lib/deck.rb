@@ -11,7 +11,6 @@ class Deck
         @deck << Card.new(i, suit)
       end
     end
-
   end
 
   def deal_cards(hand)
@@ -23,5 +22,4 @@ class Deck
   def shuffle_deck!
     @deck.shuffle!
   end
-
 end

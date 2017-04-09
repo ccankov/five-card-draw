@@ -15,10 +15,4 @@ describe Player do
       expect(player.pot).to eq(50_000)
     end
   end
-
-  describe '#move(bet_amt)' do
-    it 'returns an array containing fold see or raise in index 0' do
-      expect([:fold, :see, :raise]).to include(player.move[0])
-    end
-  end
 end
